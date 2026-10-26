@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/Screens/home/homeScreen.dart';
 import 'package:follower_for_tik_likes_views/Screens/orders/orderScreen.dart';
+import 'package:follower_for_tik_likes_views/Screens/profile/profileScreen.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/app_bottom_nav.dart';
 
 /// Home / Orders / Profile ka container. '/main' route yahi kholta hai.
@@ -27,7 +28,7 @@ class _MainScreenState extends State<MainScreen> {
           const HomeScreen(),
           // Orders ka back arrow Home tab par le jata hai
           OrdersScreen(onBack: () => setState(() => _index = 0)),
-          const _Placeholder(title: 'Profile'), // TODO: ProfileScreen()
+          const ProfileScreen(),
         ],
       ),
       bottomNavigationBar: AppBottomNav(

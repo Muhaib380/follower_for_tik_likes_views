@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/Screens/orders/order_filter_tab.dart';
+import 'package:follower_for_tik_likes_views/core/models/order_model.dart';
+import 'package:follower_for_tik_likes_views/shared/widgets/order_card.dart';
 
 /// Bottom nav ka "Orders" tab.
 /// onBack: back arrow dabane par kya karna hai (MainScreen Home tab par bhej dega).
@@ -17,6 +19,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Abhi dummy orders. Baad mein OrderProvider se aayenge.
+    final all = OrderModel.dummy;
+    final orders = _filter == 0
+        ? all
+        : all.where((o) => o.status == OrderStatus.values[_filter - 1]).toList();
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -50,12 +58,20 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
               const SizedBox(height: 16),
 
-              // ---------- List (agle step mein) ----------
+              // ---------- List ----------
               Expanded(
-                child: Center(
+                child: orders.isEmpty
+                    ? Center(
                   child: Text(
-                    '${OrderFilterTabs.labels[_filter]} orders ki list agle step mein',
+                    'Koi ${OrderFilterTabs.labels[_filter].toLowerCase()} order nahi',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                )
+                    : ListView.separated(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  itemCount: orders.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  itemBuilder: (_, i) => OrderCard(order: orders[i]),
                 ),
               ),
             ],

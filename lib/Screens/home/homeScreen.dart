@@ -77,6 +77,9 @@ class HomeScreen extends StatelessWidget {
                           onSeeAll: () => Navigator.pushNamed(
                               context, AppRoutes.packages,
                               arguments: 0),
+                          onPackageTap: (tab) => Navigator.pushNamed(
+                              context, AppRoutes.packages,
+                              arguments: tab),
                         ),
                       ],
                     ),

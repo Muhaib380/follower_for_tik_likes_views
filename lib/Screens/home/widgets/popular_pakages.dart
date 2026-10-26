@@ -5,7 +5,11 @@ import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 class PopularPackages extends StatelessWidget {
   final VoidCallback? onSeeAll;
 
-  const PopularPackages({super.key, this.onSeeAll});
+  /// Called when a package card is tapped.
+  /// tab: 0 = Followers, 1 = Likes, 2 = Views
+  final ValueChanged<int>? onPackageTap;
+
+  const PopularPackages({super.key, this.onSeeAll, this.onPackageTap});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,7 @@ class PopularPackages extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         // Abhi dummy data. Baad mein PackageProvider se aayega.
-        const Row(
+        Row(
           children: [
             Expanded(
               child: _PackageCard(
@@ -48,6 +52,7 @@ class PopularPackages extends StatelessWidget {
                 circleColor: AppColors.chipBackground,
                 quantity: '1000',
                 label: 'Followers',
+                onTap: () => onPackageTap?.call(0),
                 price: '\$4.99',
               ),
             ),
@@ -59,6 +64,7 @@ class PopularPackages extends StatelessWidget {
                 circleColor: Color(0xFFFFE3EA),
                 quantity: '500',
                 label: 'Likes',
+                onTap: () => onPackageTap?.call(1),
                 price: '\$2.99',
               ),
             ),
@@ -70,6 +76,7 @@ class PopularPackages extends StatelessWidget {
                 circleColor: AppColors.chipBackground,
                 quantity: '1000',
                 label: 'Views',
+                onTap: () => onPackageTap?.call(2),
                 price: '\$3.99',
               ),
             ),
@@ -87,6 +94,7 @@ class _PackageCard extends StatelessWidget {
   final String quantity;
   final String label;
   final String price;
+  final VoidCallback? onTap;
 
   const _PackageCard({
     required this.icon,
@@ -95,55 +103,59 @@ class _PackageCard extends StatelessWidget {
     required this.quantity,
     required this.label,
     required this.price,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     final textColor = Theme.of(context).textTheme.bodyLarge?.color;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Theme.of(context).dividerColor),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withOpacity(0.06),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 52,
-            width: 52,
-            decoration: BoxDecoration(color: circleColor, shape: BoxShape.circle),
-            child: Icon(icon, color: iconColor, size: 26),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            quantity,
-            style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w700, color: textColor),
-          ),
-          Text(
-            label,
-            style: TextStyle(
-                fontSize: 12, fontWeight: FontWeight.w600, color: textColor),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            price,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primary,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Theme.of(context).dividerColor),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withOpacity(0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 52,
+              width: 52,
+              decoration: BoxDecoration(color: circleColor, shape: BoxShape.circle),
+              child: Icon(icon, color: iconColor, size: 26),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              quantity,
+              style: TextStyle(
+                  fontSize: 14, fontWeight: FontWeight.w700, color: textColor),
+            ),
+            Text(
+              label,
+              style: TextStyle(
+                  fontSize: 12, fontWeight: FontWeight.w600, color: textColor),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              price,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
