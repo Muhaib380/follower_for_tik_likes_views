@@ -10,6 +10,7 @@ import 'package:follower_for_tik_likes_views/Screens/payment/order_success_Scree
 import 'package:follower_for_tik_likes_views/Screens/payment/paymentScreen.dart';
 import 'package:follower_for_tik_likes_views/Screens/settings/settingScreen.dart';
 import 'package:follower_for_tik_likes_views/Screens/splash/splashScreen.dart';
+import 'package:follower_for_tik_likes_views/Screens/support/supportScreen.dart';
 import 'package:follower_for_tik_likes_views/models/pakages_model.dart';
 
 class AppRoutes {
@@ -57,6 +58,8 @@ class RouteGenerator {
         return _page(OrderSuccessScreen(package: package), settings);
       case AppRoutes.settings:
         return _page(const SettingsScreen(), settings);
+      case AppRoutes.support:
+        return _page(const SupportScreen(), settings);
 
       default:
         return _page(_Placeholder(name: settings.name ?? 'unknown'), settings);

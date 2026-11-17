@@ -3,7 +3,9 @@ import 'package:follower_for_tik_likes_views/Screens/payment/payment_method_tile
 import 'package:follower_for_tik_likes_views/Screens/payment/payment_summray_card.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
 import 'package:follower_for_tik_likes_views/models/pakages_model.dart';
+import 'package:follower_for_tik_likes_views/provider/order_Provider.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/custom_button.dart';
+import 'package:provider/provider.dart';
 
 /// Packages screen se Buy dabane par khulti hai. Chuna hua package yahan aata hai.
 class PaymentScreen extends StatefulWidget {
@@ -45,16 +47,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
   ];
 
   int _selected = 0; // pehle se Google Pay chuna hua
+  bool _paying = false; // stops double taps while the order is being created
 
-  void _proceed() {
-    debugPrint('1. Proceed dabaya');
-    debugPrint('2. package = ${widget.package.title}');
+  Future<void> _proceed() async {
+    if (_paying) return;
+    setState(() => _paying = true);
+
+    // read: we only call a function here, we do not need to listen for changes
+    await context.read<OrderProvider>().placeOrder(widget.package);
+    debugPrint('Order placed: ${widget.package.title}');
+
+    if (!mounted) return;
     Navigator.pushReplacementNamed(
       context,
       AppRoutes.orderSuccess,
       arguments: widget.package,
     );
-    debugPrint('3. navigation ho gayi');
   }
 
   @override
@@ -109,7 +117,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
               // ---------- Proceed to Pay ----------
               const SizedBox(height: 12),
-              CustomButton(text: 'Proceed to Pay', onPressed: _proceed),
+              CustomButton(
+                text: 'Proceed to Pay',
+                isLoading: _paying,
+                onPressed: _proceed,
+              ),
               const SizedBox(height: 20),
             ],
           ),

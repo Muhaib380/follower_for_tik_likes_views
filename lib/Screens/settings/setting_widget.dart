@@ -3,12 +3,12 @@ import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 
 /// A titled section (e.g. "Account") with a card that holds its rows.
 class SettingsSection extends StatelessWidget {
-  final String title;
+  final String? title; // optional: no label is shown when null
   final List<Widget> children;
 
   const SettingsSection({
     super.key,
-    required this.title,
+    this.title,
     required this.children,
   });
 
@@ -19,17 +19,18 @@ class SettingsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 10),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 13.5,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textSecondary,
+        if (title != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 10),
+            child: Text(
+              title!,
+              style: const TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textSecondary,
+              ),
             ),
           ),
-        ),
         Container(
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
