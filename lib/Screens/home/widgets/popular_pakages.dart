@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 import 'package:follower_for_tik_likes_views/models/pakages_model.dart';
 
-/// "Popular Packages" title, "See All >" aur 3 package cards (from PackageModel).
+/// "Popular Packages" title, "See All >" aur 3 soft pastel package cards.
 class PopularPackages extends StatelessWidget {
   final VoidCallback? onSeeAll;
 
@@ -66,7 +66,7 @@ class PopularPackages extends StatelessWidget {
               child: _PackageCard(
                 icon: Icons.person_rounded,
                 iconColor: AppColors.primary,
-                circleColor: AppColors.chipBackground,
+                backgroundColor: const Color(0xFFEDE9FE),
                 quantity: popularFollowers.quantityLabel,
                 label: popularFollowers.typeName,
                 onTap: () => onPackageTap?.call(0),
@@ -77,8 +77,8 @@ class PopularPackages extends StatelessWidget {
             Expanded(
               child: _PackageCard(
                 icon: Icons.favorite_rounded,
-                iconColor: const Color(0xFFFF4D6D),
-                circleColor: const Color(0xFFFFE3EA),
+                iconColor: const Color(0xFFFF3B69),
+                backgroundColor: const Color(0xFFFFE4EB),
                 quantity: popularLikes.quantityLabel,
                 label: popularLikes.typeName,
                 onTap: () => onPackageTap?.call(1),
@@ -89,8 +89,8 @@ class PopularPackages extends StatelessWidget {
             Expanded(
               child: _PackageCard(
                 icon: Icons.play_arrow_rounded,
-                iconColor: AppColors.primary,
-                circleColor: AppColors.chipBackground,
+                iconColor: const Color(0xFF0284C7),
+                backgroundColor: const Color(0xFFE0F2FE),
                 quantity: popularViews.quantityLabel,
                 label: popularViews.typeName,
                 onTap: () => onPackageTap?.call(2),
@@ -107,7 +107,7 @@ class PopularPackages extends StatelessWidget {
 class _PackageCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
-  final Color circleColor;
+  final Color backgroundColor;
   final String quantity;
   final String label;
   final String price;
@@ -116,7 +116,7 @@ class _PackageCard extends StatelessWidget {
   const _PackageCard({
     required this.icon,
     required this.iconColor,
-    required this.circleColor,
+    required this.backgroundColor,
     required this.quantity,
     required this.label,
     required this.price,
@@ -138,8 +138,8 @@ class _PackageCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: AppColors.primary.withOpacity(0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+              blurRadius: 14,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
@@ -148,9 +148,13 @@ class _PackageCard extends StatelessWidget {
             Container(
               height: 52,
               width: 52,
-              decoration:
-                  BoxDecoration(color: circleColor, shape: BoxShape.circle),
-              child: Icon(icon, color: iconColor, size: 26),
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Icon(icon, color: iconColor, size: 26),
+              ),
             ),
             const SizedBox(height: 10),
             Text(

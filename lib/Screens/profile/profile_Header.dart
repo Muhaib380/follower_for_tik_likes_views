@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 
-/// Profile ka upar ka hissa: gradient, photo, naam, TikTok username, 3 stats.
+/// Profile ka upar ka hissa: gradient, photo, TikTok username, 3 stats.
 class ProfileHeader extends StatelessWidget {
-  final String name;
+  final String? name;
   final String? tiktokUsername; // null = abhi link nahi hua
   final String following;
   final String followers;
@@ -12,7 +12,7 @@ class ProfileHeader extends StatelessWidget {
 
   const ProfileHeader({
     super.key,
-    required this.name,
+    this.name,
     required this.following,
     required this.followers,
     required this.likes,
@@ -23,7 +23,7 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final linked = tiktokUsername != null;
+    final linked = tiktokUsername != null && tiktokUsername!.trim().isNotEmpty;
 
     return Stack(
       clipBehavior: Clip.none,
@@ -45,7 +45,7 @@ class ProfileHeader extends StatelessWidget {
           ),
         ),
 
-        // 2) Rounded white sheet: naam, username, stats
+        // 2) Rounded white sheet: TikTok username, stats
         Padding(
           padding: const EdgeInsets.only(top: 150),
           child: Container(
@@ -54,20 +54,17 @@ class ProfileHeader extends StatelessWidget {
             decoration: BoxDecoration(
               color: theme.scaffoldBackgroundColor,
               borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(36)),
+                  const BorderRadius.vertical(top: Radius.circular(36)),
             ),
             child: Column(
               children: [
-                Text(name, style: theme.textTheme.headlineMedium),
-                const SizedBox(height: 6),
-
-                // TikTok username (tap karke dialog khulta hai)
+                // TikTok username / Link account (tap karke dialog khulta hai)
                 GestureDetector(
                   onTap: onTapTiktok,
                   behavior: HitTestBehavior.opaque,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 6),
+                        horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: linked
                           ? Colors.transparent
@@ -79,21 +76,24 @@ class ProfileHeader extends StatelessWidget {
                       children: [
                         Text(
                           linked
-                              ? '@$tiktokUsername'
-                              : 'Link your TikTok account',
+                              ? (tiktokUsername!.startsWith('@')
+                                  ? tiktokUsername!
+                                  : '@$tiktokUsername')
+                              : 'Link TikTok Account',
                           style: TextStyle(
-                            fontSize: 13,
-                            fontWeight:
-                            linked ? FontWeight.w500 : FontWeight.w600,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
                             color: linked
-                                ? AppColors.textSecondary
+                                ? theme.textTheme.headlineMedium?.color
                                 : AppColors.primary,
                           ),
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 8),
                         Icon(
-                          linked ? Icons.edit_rounded : Icons.add_link_rounded,
-                          size: 16,
+                          linked
+                              ? Icons.edit_rounded
+                              : Icons.add_link_rounded,
+                          size: 18,
                           color: AppColors.primary,
                         ),
                       ],

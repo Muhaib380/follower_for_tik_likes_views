@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
+import 'package:follower_for_tik_likes_views/provider/auth_provider.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/custom_textfeild.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/socialButton.dart';
+import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/utils/validators.dart';
 import '../../shared/widgets/custom_button.dart';
@@ -33,8 +35,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _loading = true);
 
-    // TODO: AuthProvider.register() se replace karein.
-    await Future.delayed(const Duration(seconds: 1));
+    // Persist registered user through AuthProvider
+    await context.read<AuthProvider>().register(
+          _nameCtrl.text.trim(),
+          _emailCtrl.text.trim(),
+          _passCtrl.text,
+        );
 
     if (!mounted) return;
     setState(() => _loading = false);
@@ -54,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Back arrow + TrendSpark (design ke mutabiq ek row mein)
+                // Back arrow + TrendSpark
                 Row(
                   children: [
                     InkWell(

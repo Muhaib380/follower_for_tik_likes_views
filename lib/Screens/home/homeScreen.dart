@@ -3,14 +3,23 @@ import 'package:follower_for_tik_likes_views/Screens/home/widgets/home_header.da
 import 'package:follower_for_tik_likes_views/Screens/home/widgets/popular_pakages.dart';
 import 'package:follower_for_tik_likes_views/Screens/home/widgets/quick_actions.dart';
 import 'package:follower_for_tik_likes_views/Screens/home/widgets/total_followers_card.dart';
-// (STEP 1) Ye import add karein, taake AppRoutes.packages mil jaye
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
+import 'package:follower_for_tik_likes_views/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Read TikTok username from UserProvider dynamically
+    final tiktokUsername = context.watch<UserProvider>().tiktokUsername;
+    final displayName = (tiktokUsername != null && tiktokUsername.trim().isNotEmpty)
+        ? (tiktokUsername.startsWith('@')
+            ? tiktokUsername.substring(1)
+            : tiktokUsername)
+        : 'Friend';
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -28,9 +37,9 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               // ---------- Part 1: header + card ----------
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 14, 20, 0),
-                child: HomeHeader(name: 'Muhib'),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+                child: HomeHeader(name: displayName),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -45,16 +54,14 @@ class HomeScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(32)),
+                        const BorderRadius.vertical(top: Radius.circular(32)),
                   ),
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.fromLTRB(20, 26, 20, 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // (STEP 2) QuickActions: 4 icons ke tap yahan jurte hain.
-                        // Dhyan: yahan se `const` hata diya hai, warna
-                        // onTap wale functions nahi chalte.
+                        // QuickActions: 4 realistic gradient icons
                         QuickActions(
                           // Get Followers -> Packages, tab 0 (Followers)
                           onFollowers: () => Navigator.pushNamed(
@@ -68,11 +75,14 @@ class HomeScreen extends StatelessWidget {
                           onViews: () => Navigator.pushNamed(
                               context, AppRoutes.packages,
                               arguments: 2),
-                          // More: abhi kuch nahi (baad mein)
+                          // More -> Packages screen
+                          onMore: () => Navigator.pushNamed(
+                              context, AppRoutes.packages,
+                              arguments: 0),
                         ),
                         const SizedBox(height: 28),
 
-                        // (STEP 3) "See All" -> Packages, tab 0 (Followers)
+                        // Popular Packages from PackageModel
                         PopularPackages(
                           onSeeAll: () => Navigator.pushNamed(
                               context, AppRoutes.packages,

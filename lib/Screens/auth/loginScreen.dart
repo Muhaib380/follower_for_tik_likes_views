@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
+import 'package:follower_for_tik_likes_views/provider/auth_provider.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/custom_textfeild.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/socialButton.dart';
+import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
-import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
 import '../../core/utils/validators.dart';
 import '../../shared/widgets/custom_button.dart';
 import 'auth_widgets.dart';
@@ -27,27 +29,89 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _login() async {
-    debugPrint('1. login pressed');
+  void _showForgotPasswordDialog() {
+    final resetEmailCtrl =
+        TextEditingController(text: _emailCtrl.text.trim());
+    final resetFormKey = GlobalKey<FormState>();
 
-    if (!_formKey.currentState!.validate()) {
-      debugPrint('2. validation failed');
-      return;
-    }
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
+        title: const Row(
+          children: [
+            Icon(Icons.lock_reset_rounded, color: AppColors.primary),
+            SizedBox(width: 10),
+            Text('Reset Password',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          ],
+        ),
+        content: Form(
+          key: resetFormKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Enter your registered email address and we will send you a link to reset your password.',
+                style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: 16),
+              CustomTextField(
+                hint: 'Email Address',
+                prefixIcon: Icons.mail_outline_rounded,
+                controller: resetEmailCtrl,
+                keyboardType: TextInputType.emailAddress,
+                validator: Validators.email,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+            ),
+            onPressed: () {
+              if (resetFormKey.currentState!.validate()) {
+                final email = resetEmailCtrl.text.trim();
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                        Text('Password reset instructions sent to $email'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
+            child: const Text('Send Link'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) return;
 
     setState(() => _loading = true);
-    debugPrint('3. validation passed, loading shuru');
 
-    // TODO: AuthProvider.login() se replace karein.
-    await Future.delayed(const Duration(seconds: 1));
+    // Persist login state through AuthProvider
+    await context
+        .read<AuthProvider>()
+        .login(_emailCtrl.text.trim(), _passCtrl.text);
 
-    if (!mounted) {
-      debugPrint('4. screen mounted nahi hai');
-      return;
-    }
+    if (!mounted) return;
     setState(() => _loading = false);
 
-    debugPrint('5. ab Home par ja rahe hain');
     Navigator.pushReplacementNamed(context, AppRoutes.main);
   }
 
@@ -91,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                    onTap: () {}, // TODO: forgot password
+                    onTap: _showForgotPasswordDialog,
                     child: Text(
                       'Forgot Password?',
                       style: textTheme.bodySmall?.copyWith(

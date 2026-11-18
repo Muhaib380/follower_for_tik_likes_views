@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
+import 'package:follower_for_tik_likes_views/provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/constants/app_colors.dart';
 import '../../shared/widgets/custom_button.dart';
@@ -29,7 +31,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController();
   int _index = 0;
 
-  // Illustrations ke asset aane tak icons placeholder hain.
   static const _pages = [
     _OnboardData(
       image: "assets/images/onboarding1-r.png",
@@ -53,8 +54,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   bool get _isLast => _index == _pages.length - 1;
 
-  void _goToLogin() =>
-      Navigator.pushReplacementNamed(context, AppRoutes.login);
+  void _goToLogin() {
+    context.read<AuthProvider>().completeOnboarding();
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
+  }
 
   void _next() {
     if (_isLast) {
@@ -111,13 +114,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                              child: Center(
-                                child: Image.asset(
-                                  p.image,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                          child: Center(
+                            child: Image.asset(
+                              p.image,
+                              fit: BoxFit.contain,
                             ),
+                          ),
+                        ),
                         Text(
                           p.titleTop,
                           style: textTheme.headlineLarge?.copyWith(
@@ -134,10 +137,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        Text(p.description, style: textTheme.bodyMedium?.copyWith(
-                          fontSize: 17,
-                          height: 1.5
-                        )),
+                        Text(p.description,
+                            style: textTheme.bodyMedium?.copyWith(
+                                fontSize: 17, height: 1.5)),
                         const SizedBox(height: 24),
                       ],
                     ),

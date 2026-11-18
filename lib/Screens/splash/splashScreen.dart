@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
+import 'package:follower_for_tik_likes_views/provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen>
   )..forward();
 
   late final Animation<double> _fade =
-  CurvedAnimation(parent: _controller, curve: Curves.easeIn);
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn);
   late final Animation<double> _scale = Tween<double>(begin: 0.8, end: 1.0)
       .animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutBack));
 
@@ -26,10 +28,22 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    // TODO: baad mein yahan check karein: onboarding dekh chuka? logged in?
-    _timer = Timer(const Duration(milliseconds: 2800), () {
+    _timer = Timer(const Duration(milliseconds: 2600), () {
       if (!mounted) return;
-      Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+
+      final auth = context.read<AuthProvider>();
+
+      // Intelligent navigation routing:
+      if (auth.isLoggedIn) {
+        // User already logged in -> Go straight to Main (Home)
+        Navigator.pushReplacementNamed(context, AppRoutes.main);
+      } else if (!auth.hasSeenOnboarding) {
+        // First time user -> Show Onboarding
+        Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+      } else {
+        // Logged out but seen onboarding -> Show Login
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      }
     });
   }
 
