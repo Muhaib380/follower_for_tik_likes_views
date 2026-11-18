@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:follower_for_tik_likes_views/Screens/order_repository/repository.dart';
 import 'package:follower_for_tik_likes_views/core/models/order_model.dart';
 import 'package:follower_for_tik_likes_views/models/pakages_model.dart';
-
+import 'package:follower_for_tik_likes_views/Screens/repository/order_repository.dart';
 
 /// Holds the orders list for the whole app.
 /// Screens listen to it and rebuild automatically when it changes.
@@ -41,8 +40,8 @@ class OrderProvider extends ChangeNotifier {
   }
 
   /// Called by the Payment screen. Creates the order and adds it to the list.
-  Future<OrderModel> placeOrder(PackageModel package) async {
-    final order = await _repo.createOrder(package);
+  Future<OrderModel> placeOrder(PackageModel package, {String target = ''}) async {
+    final order = await _repo.createOrder(package, target: target);
     _orders.insert(0, order);
     notifyListeners(); // the Orders screen updates by itself
     return order;

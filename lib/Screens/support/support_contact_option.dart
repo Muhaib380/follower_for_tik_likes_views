@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 
-/// Three tappable cards: Email, Live Chat and Call Us.
+/// Two tappable cards: Email and Call Us.
 class SupportContactOptions extends StatelessWidget {
   final VoidCallback? onEmail;
-  final VoidCallback? onChat;
   final VoidCallback? onCall;
 
   const SupportContactOptions({
     super.key,
     this.onEmail,
-    this.onChat,
     this.onCall,
   });
 
@@ -25,15 +23,7 @@ class SupportContactOptions extends StatelessWidget {
             onTap: onEmail,
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _OptionCard(
-            icon: Icons.chat_bubble_rounded,
-            label: 'Live Chat',
-            onTap: onChat,
-          ),
-        ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 14),
         Expanded(
           child: _OptionCard(
             icon: Icons.call_rounded,

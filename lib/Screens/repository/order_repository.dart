@@ -16,16 +16,17 @@ class OrderRepository {
     return List.of(_orders);
   }
 
-  Future<OrderModel> createOrder(PackageModel package) async {
+  Future<OrderModel> createOrder(PackageModel package, {String target = ''}) async {
     await Future.delayed(const Duration(milliseconds: 600));
 
     final order = OrderModel(
       id: 'o${DateTime.now().millisecondsSinceEpoch}',
       package: package,
-      status: OrderStatus.processing, // every new order starts as Processing
+      status: OrderStatus.processing,
       date: DateTime.now(),
+      target: target, // <- new
     );
-    _orders.insert(0, order); // newest first
+    _orders.insert(0, order);
     return order;
   }
 }

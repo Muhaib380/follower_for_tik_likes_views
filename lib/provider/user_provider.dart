@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:follower_for_tik_likes_views/Screens/order_repository/user_repository.dart';
+import 'package:follower_for_tik_likes_views/Screens/repository/user_repository.dart';
 
 /// Holds the user's TikTok username for the whole app.
 /// The Profile screen (and later the Payment screen) read it from here,

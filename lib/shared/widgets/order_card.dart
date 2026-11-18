@@ -88,9 +88,11 @@ class OrderCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 2),
-                const Text(
-                  'Real & Active',
-                  style: TextStyle(
+                Text(
+                  order.targetLabel,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
                       fontSize: 12.5, color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: 4),

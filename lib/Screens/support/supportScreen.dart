@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:follower_for_tik_likes_views/Screens/support/support_contact_option.dart';
 import 'package:follower_for_tik_likes_views/Screens/support/support_faq_section.dart';
 import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
@@ -6,11 +7,61 @@ import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 class SupportScreen extends StatelessWidget {
   const SupportScreen({super.key});
 
-  void _comingSoon(BuildContext context, String what) {
-    // TODO: Open the real action later (email app, chat, phone dialer).
-    // Email and phone need the url_launcher package.
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$what is coming soon')),
+  void _showContactDialog(
+    BuildContext context, {
+    required String title,
+    required String value,
+    required IconData icon,
+  }) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                color: AppColors.chipBackground,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: AppColors.primary, size: 22),
+            ),
+            const SizedBox(width: 12),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
+          ],
+        ),
+        content: SelectableText(
+          value,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Close'),
+          ),
+          ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: value));
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('$title copied to clipboard'),
+                  behavior: SnackBarBehavior.floating,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            },
+            icon: const Icon(Icons.copy_rounded, size: 16),
+            label: const Text('Copy'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -107,9 +158,18 @@ class SupportScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 14),
               SupportContactOptions(
-                onEmail: () => _comingSoon(context, 'Email support'),
-                onChat: () => _comingSoon(context, 'Live chat'),
-                onCall: () => _comingSoon(context, 'Calling'),
+                onEmail: () => _showContactDialog(
+                  context,
+                  title: 'Email',
+                  value: 'muhaib5t@gmail.com',
+                  icon: Icons.mail_rounded,
+                ),
+                onCall: () => _showContactDialog(
+                  context,
+                  title: 'Phone Number',
+                  value: '03478934962',
+                  icon: Icons.call_rounded,
+                ),
               ),
               const SizedBox(height: 28),
 

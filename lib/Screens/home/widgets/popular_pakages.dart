@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
+import 'package:follower_for_tik_likes_views/models/pakages_model.dart';
 
-/// "Popular Packages" title, "See All >" aur 3 package cards.
+/// "Popular Packages" title, "See All >" aur 3 package cards (from PackageModel).
 class PopularPackages extends StatelessWidget {
   final VoidCallback? onSeeAll;
 
@@ -13,6 +14,23 @@ class PopularPackages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Single source of truth from PackageModel
+    final popularFollowers = PackageModel.dummy.firstWhere(
+      (p) => p.id == 'f3',
+      orElse: () => const PackageModel(
+          id: 'f3', type: PackageType.followers, quantity: 1000, price: 16.99),
+    );
+    final popularLikes = PackageModel.dummy.firstWhere(
+      (p) => p.id == 'l2',
+      orElse: () => const PackageModel(
+          id: 'l2', type: PackageType.likes, quantity: 500, price: 2.99),
+    );
+    final popularViews = PackageModel.dummy.firstWhere(
+      (p) => p.id == 'v2',
+      orElse: () => const PackageModel(
+          id: 'v2', type: PackageType.views, quantity: 1000, price: 3.99),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -42,7 +60,6 @@ class PopularPackages extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 14),
-        // Abhi dummy data. Baad mein PackageProvider se aayega.
         Row(
           children: [
             Expanded(
@@ -50,34 +67,34 @@ class PopularPackages extends StatelessWidget {
                 icon: Icons.person_rounded,
                 iconColor: AppColors.primary,
                 circleColor: AppColors.chipBackground,
-                quantity: '1000',
-                label: 'Followers',
+                quantity: popularFollowers.quantityLabel,
+                label: popularFollowers.typeName,
                 onTap: () => onPackageTap?.call(0),
-                price: '\$4.99',
+                price: popularFollowers.priceLabel,
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
               child: _PackageCard(
                 icon: Icons.favorite_rounded,
-                iconColor: Color(0xFFFF4D6D),
-                circleColor: Color(0xFFFFE3EA),
-                quantity: '500',
-                label: 'Likes',
+                iconColor: const Color(0xFFFF4D6D),
+                circleColor: const Color(0xFFFFE3EA),
+                quantity: popularLikes.quantityLabel,
+                label: popularLikes.typeName,
                 onTap: () => onPackageTap?.call(1),
-                price: '\$2.99',
+                price: popularLikes.priceLabel,
               ),
             ),
-            SizedBox(width: 12),
+            const SizedBox(width: 12),
             Expanded(
               child: _PackageCard(
                 icon: Icons.play_arrow_rounded,
                 iconColor: AppColors.primary,
                 circleColor: AppColors.chipBackground,
-                quantity: '1000',
-                label: 'Views',
+                quantity: popularViews.quantityLabel,
+                label: popularViews.typeName,
                 onTap: () => onPackageTap?.call(2),
-                price: '\$3.99',
+                price: popularViews.priceLabel,
               ),
             ),
           ],
@@ -131,7 +148,8 @@ class _PackageCard extends StatelessWidget {
             Container(
               height: 52,
               width: 52,
-              decoration: BoxDecoration(color: circleColor, shape: BoxShape.circle),
+              decoration:
+                  BoxDecoration(color: circleColor, shape: BoxShape.circle),
               child: Icon(icon, color: iconColor, size: 26),
             ),
             const SizedBox(height: 10),
