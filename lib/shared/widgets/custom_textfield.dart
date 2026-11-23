@@ -44,14 +44,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
         prefixIcon: Icon(widget.prefixIcon, size: 20),
         suffixIcon: widget.isPassword
             ? IconButton(
-          icon: Icon(
-            _obscure
-                ? Icons.visibility_off_outlined
-                : Icons.visibility_outlined,
-            size: 20,
-          ),
-          onPressed: () => setState(() => _obscure = !_obscure),
-        )
+                icon: Icon(
+                  _obscure
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  size: 20,
+                ),
+                onPressed: () => setState(() => _obscure = !_obscure),
+              )
             : null,
       ),
     );

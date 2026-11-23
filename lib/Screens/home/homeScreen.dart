@@ -12,13 +12,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Read TikTok username from UserProvider dynamically
-    final tiktokUsername = context.watch<UserProvider>().tiktokUsername;
-    final displayName = (tiktokUsername != null && tiktokUsername.trim().isNotEmpty)
-        ? (tiktokUsername.startsWith('@')
-            ? tiktokUsername.substring(1)
-            : tiktokUsername)
-        : 'Friend';
+    // Read user data dynamically from UserProvider
+    final user = context.watch<UserProvider>();
+    final displayName = user.displayName;
 
     return Scaffold(
       body: Container(
@@ -41,9 +37,12 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
                 child: HomeHeader(name: displayName),
               ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: TotalFollowersCard(count: '12.4K', growth: '+12%'),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: TotalFollowersCard(
+                  count: user.followers,
+                  growth: '+12%',
+                ),
               ),
               const SizedBox(height: 24),
 

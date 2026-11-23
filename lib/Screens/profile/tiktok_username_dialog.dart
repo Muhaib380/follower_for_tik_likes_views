@@ -16,7 +16,7 @@ class TiktokUsernameDialog extends StatefulWidget {
 
 class _TiktokUsernameDialogState extends State<TiktokUsernameDialog> {
   late final TextEditingController _ctrl =
-  TextEditingController(text: widget.initial ?? '');
+      TextEditingController(text: widget.initial ?? '');
   String? _error;
 
   @override
@@ -81,20 +81,20 @@ class _TiktokUsernameDialogState extends State<TiktokUsernameDialog> {
                     ?.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
                 errorText: _error,
                 contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: const BorderSide(color: AppColors.primary),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
-                  borderSide: const BorderSide(
-                      color: AppColors.primary, width: 1.2),
+                  borderSide:
+                      const BorderSide(color: AppColors.primary, width: 1.2),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide:
-                  const BorderSide(color: AppColors.primary, width: 1.8),
+                      const BorderSide(color: AppColors.primary, width: 1.8),
                 ),
               ),
             ),

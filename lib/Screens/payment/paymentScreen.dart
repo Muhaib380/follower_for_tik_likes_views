@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/Screens/payment/payment_method_tile.dart';
-import 'package:follower_for_tik_likes_views/Screens/payment/payment_summray_card.dart';
+import 'package:follower_for_tik_likes_views/Screens/payment/payment_summary_card.dart';
 import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
 import 'package:follower_for_tik_likes_views/models/pakages_model.dart';
@@ -8,7 +8,7 @@ import 'package:follower_for_tik_likes_views/provider/order_Provider.dart';
 import 'package:follower_for_tik_likes_views/provider/user_provider.dart';
 import 'package:follower_for_tik_likes_views/provider/wallet_provider.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/custom_button.dart';
-import 'package:follower_for_tik_likes_views/shared/widgets/order_target_feild.dart';
+import 'package:follower_for_tik_likes_views/shared/widgets/order_target_field.dart';
 import 'package:provider/provider.dart';
 
 /// Opens when Buy is tapped on the Packages screen. Receives the chosen package.

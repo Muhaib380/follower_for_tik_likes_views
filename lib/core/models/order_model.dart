@@ -17,8 +17,47 @@ class OrderModel {
     required this.date,
     this.target = '', // optional, so the old dummy orders still work
   });
-// ... rest of the class stays the same
 
+  /// Factory constructor to parse JSON from Node.js / MySQL backend
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    return OrderModel(
+      id: json['id']?.toString() ?? '',
+      package: json['package'] != null && json['package'] is Map<String, dynamic>
+          ? PackageModel.fromJson(json['package'] as Map<String, dynamic>)
+          : PackageModel(
+              id: json['package_id']?.toString() ?? 'p1',
+              type: switch (json['package_type']?.toString().toLowerCase()) {
+                'likes' => PackageType.likes,
+                'views' => PackageType.views,
+                _ => PackageType.followers,
+              },
+              quantity: (json['quantity'] as num?)?.toInt() ?? 100,
+              price: (json['amount'] as num?)?.toDouble() ?? 0.0,
+            ),
+      status: switch (json['status']?.toString().toLowerCase()) {
+        'completed' => OrderStatus.completed,
+        'canceled' || 'cancelled' => OrderStatus.canceled,
+        _ => OrderStatus.processing,
+      },
+      date: json['date'] != null
+          ? (DateTime.tryParse(json['date'].toString()) ?? DateTime.now())
+          : (json['created_at'] != null
+              ? (DateTime.tryParse(json['created_at'].toString()) ?? DateTime.now())
+              : DateTime.now()),
+      target: json['target']?.toString() ?? '',
+    );
+  }
+
+  /// Converts this OrderModel to a JSON map to send to backend or storage
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'package': package.toJson(),
+      'status': status.name,
+      'date': date.toIso8601String(),
+      'target': target,
+    };
+  }
 
   /// What the Orders list shows under the package name:
   /// "@username" for followers, the video link for likes / views.

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/Screens/profile/contact_support.dart';
 import 'package:follower_for_tik_likes_views/Screens/profile/profile_Header.dart';
 import 'package:follower_for_tik_likes_views/Screens/profile/profile_menu_card.dart';
-import 'package:follower_for_tik_likes_views/Screens/profile/tiktok_username_diolog.dart';
+import 'package:follower_for_tik_likes_views/Screens/profile/tiktok_username_dialog.dart';
 import 'package:follower_for_tik_likes_views/Screens/settings/setting_content.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
 import 'package:follower_for_tik_likes_views/provider/auth_provider.dart';
@@ -19,7 +19,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _editTiktok() async {
-    final current = context.read<UserProvider>().tiktokUsername;
+    final userProvider = context.read<UserProvider>();
+    final current = userProvider.tiktokUsername;
 
     final result = await showDialog<String>(
       context: context,
@@ -27,12 +28,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
     if (result == null || !mounted) return;
 
-    await context.read<UserProvider>().setTiktokUsername(result);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Fetching TikTok profile for @$result...'),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+
+    await userProvider.setTiktokUsername(result);
     if (!mounted) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('TikTok account linked: @$result')),
-    );
+    if (userProvider.avatarUrl != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('TikTok profile updated: @$result'),
+          backgroundColor: const Color(0xFF10B981),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('TikTok account linked: @$result')),
+      );
+    }
   }
 
   Future<void> _logout() async {
@@ -120,7 +137,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final username = context.watch<UserProvider>().tiktokUsername;
+    final user = context.watch<UserProvider>();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -128,10 +145,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             // ---------- Part 1: top section ----------
             ProfileHeader(
-              tiktokUsername: username,
-              following: '124',
-              followers: '12.4K',
-              likes: '482',
+              tiktokUsername: user.tiktokUsername,
+              avatarUrl: user.avatarUrl,
+              isFetching: user.isFetching,
+              following: user.following,
+              followers: user.followers,
+              likes: user.likes,
               onTapTiktok: _editTiktok,
             ),
 

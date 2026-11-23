@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
 import 'package:follower_for_tik_likes_views/provider/auth_provider.dart';
-import 'package:follower_for_tik_likes_views/shared/widgets/custom_textfeild.dart';
+import 'package:follower_for_tik_likes_views/shared/widgets/custom_textfield.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/socialButton.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';

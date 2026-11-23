@@ -13,6 +13,31 @@ class PackageModel {
     required this.price,
   });
 
+  /// Factory constructor to parse JSON from Node.js / MySQL backend
+  factory PackageModel.fromJson(Map<String, dynamic> json) {
+    return PackageModel(
+      id: json['id']?.toString() ?? '',
+      type: switch (json['type']?.toString().toLowerCase()) {
+        'followers' => PackageType.followers,
+        'likes' => PackageType.likes,
+        'views' => PackageType.views,
+        _ => PackageType.followers,
+      },
+      quantity: (json['quantity'] as num?)?.toInt() ?? 0,
+      price: (json['price'] as num?)?.toDouble() ?? 0.0,
+    );
+  }
+
+  /// Converts this PackageModel to a JSON map to send to backend or storage
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type.name,
+      'quantity': quantity,
+      'price': price,
+    };
+  }
+
   /// 50 -> "50", 1000 -> "1K", 2500 -> "2.5K", 1000000 -> "1M"
   String get quantityLabel {
     if (quantity >= 1000000) {

@@ -15,6 +15,41 @@ class WalletTransactionModel {
     required this.type,
   });
 
+  /// Factory constructor to parse JSON from Node.js / MySQL backend
+  factory WalletTransactionModel.fromJson(Map<String, dynamic> json) {
+    return WalletTransactionModel(
+      id: json['id']?.toString() ?? '',
+      title: json['title']?.toString() ??
+          (json['type']?.toString().toLowerCase() == 'deposit'
+              ? 'Top-up / Deposit'
+              : 'Package Purchase'),
+      amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
+      date: json['date'] != null
+          ? (DateTime.tryParse(json['date'].toString()) ?? DateTime.now())
+          : (json['created_at'] != null
+              ? (DateTime.tryParse(json['created_at'].toString()) ??
+                  DateTime.now())
+              : DateTime.now()),
+      type: switch (json['type']?.toString().toLowerCase()) {
+        'deposit' || 'topup' => TransactionType.deposit,
+        'purchase' => TransactionType.purchase,
+        'withdrawal' || 'withdraw' => TransactionType.withdrawal,
+        _ => TransactionType.deposit,
+      },
+    );
+  }
+
+  /// Converts this WalletTransactionModel to a JSON map to send to backend or storage
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'amount': amount,
+      'date': date.toIso8601String(),
+      'type': type.name,
+    };
+  }
+
   bool get isCredit => type == TransactionType.deposit;
 
   String get amountLabel {

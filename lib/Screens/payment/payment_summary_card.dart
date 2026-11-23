@@ -9,10 +9,10 @@ class PaymentSummaryCard extends StatelessWidget {
   const PaymentSummaryCard({super.key, required this.package});
 
   IconData get _icon => switch (package.type) {
-    PackageType.followers => Icons.person_rounded,
-    PackageType.likes => Icons.favorite_rounded,
-    PackageType.views => Icons.play_arrow_rounded,
-  };
+        PackageType.followers => Icons.person_rounded,
+        PackageType.likes => Icons.favorite_rounded,
+        PackageType.views => Icons.play_arrow_rounded,
+      };
 
   @override
   Widget build(BuildContext context) {

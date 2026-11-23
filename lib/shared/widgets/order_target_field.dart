@@ -73,7 +73,8 @@ class OrderTargetField extends StatelessWidget {
                 ? 'username'
                 : 'https://www.tiktok.com/@user/video/...',
             prefixText: _isUsername ? '@' : null,
-            prefixIcon: _isUsername ? null : const Icon(Icons.link_rounded, size: 20),
+            prefixIcon:
+                _isUsername ? null : const Icon(Icons.link_rounded, size: 20),
           ),
         ),
         const SizedBox(height: 8),
