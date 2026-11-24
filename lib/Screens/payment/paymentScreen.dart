@@ -4,7 +4,7 @@ import 'package:follower_for_tik_likes_views/Screens/payment/payment_summary_car
 import 'package:follower_for_tik_likes_views/core/constants/app_colors.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
 import 'package:follower_for_tik_likes_views/models/pakages_model.dart';
-import 'package:follower_for_tik_likes_views/provider/order_Provider.dart';
+import 'package:follower_for_tik_likes_views/provider/order_provider.dart';
 import 'package:follower_for_tik_likes_views/provider/user_provider.dart';
 import 'package:follower_for_tik_likes_views/provider/wallet_provider.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/custom_button.dart';

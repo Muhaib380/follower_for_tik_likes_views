@@ -6,7 +6,7 @@ import 'package:follower_for_tik_likes_views/Screens/repository/user_repository.
 import 'package:follower_for_tik_likes_views/Screens/repository/wallet_repository.dart';
 import 'package:follower_for_tik_likes_views/core/router/app_routes.dart';
 import 'package:follower_for_tik_likes_views/provider/auth_provider.dart';
-import 'package:follower_for_tik_likes_views/provider/order_Provider.dart';
+import 'package:follower_for_tik_likes_views/provider/order_provider.dart';
 import 'package:follower_for_tik_likes_views/provider/theme_provider.dart';
 import 'package:follower_for_tik_likes_views/provider/user_provider.dart';
 import 'package:follower_for_tik_likes_views/provider/wallet_provider.dart';

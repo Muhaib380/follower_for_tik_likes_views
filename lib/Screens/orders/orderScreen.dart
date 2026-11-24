@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:follower_for_tik_likes_views/Screens/orders/order_filter_tab.dart';
 import 'package:follower_for_tik_likes_views/core/models/order_model.dart';
-import 'package:follower_for_tik_likes_views/provider/order_Provider.dart';
+import 'package:follower_for_tik_likes_views/provider/order_provider.dart';
 import 'package:follower_for_tik_likes_views/shared/widgets/order_card.dart';
 import 'package:provider/provider.dart';
 
